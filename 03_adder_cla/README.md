@@ -89,10 +89,10 @@ endmodule
 ## Simulation Result
 ![waveform](./waveform/waveform0.png)
 - @ 0sec
-	- a = 32'b1000_0101_ ...
-	- b = 32'b0001_0111_ ...
-	- a+b = 32'b1001_1100_ ... --> correct
-	- c = 0 --> correct
+    - a = 32'b1000_0101_ ...
+    - b = 32'b0001_0111_ ...
+    - a+b = 32'b1001_1100_ ... --> correct
+    - c = 0 --> correct
 
 - @ 10sec
     - a   = 32'b1001_1010_ ...
@@ -102,4 +102,4 @@ endmodule
 
 ![waveform](./waveform/waveform1.png)
 -@ 100sec
-	- Sim completed with 'err=0'.
+    - Sim completed with 'err=0'.
