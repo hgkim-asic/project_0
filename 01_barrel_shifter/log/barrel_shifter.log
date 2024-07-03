@@ -1,0 +1,5 @@
+VCD info: dumpfile ./vcd/barrel_shifter.vcd opened for output.
+VCD warning: skipping signal barrel_shifter_tb.u_barrel_shifter.stage[0], it was previously included.
+VCD warning: skipping signal barrel_shifter_tb.u_barrel_shifter.stage[0], it was previously included.
+VCD warning: skipping signal barrel_shifter_tb.u_barrel_shifter.stage[0], it was previously included.
+No error occurred.
