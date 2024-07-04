@@ -18,7 +18,7 @@ module barrel_shifter
     input                               i_left  // rotate direction (1:left , 0:right)
 );
 
-    wire        [BW_DATA-1:0]           stage[BW_CTRL:0]; // stage[p][q] : q-th 'x' from left of p-th row
+    wire        [BW_DATA-1:0]           stage[BW_CTRL:0];
     
     genvar i, j;
     generate 
