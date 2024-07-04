@@ -4,7 +4,6 @@
 `define	CLKFREQ		100					// Clock Freq. (Unit: MHz)
 `define	SIMCYCLE	30					// Sim. Cycles
 `define BW_DATA		8					// Bitwidth of data
-`define BW_CTRL		$clog2(`BW_DATA)	// Bitwidth of rotate amount
 
 // --------------------------------------------------
 //	Includes
@@ -18,13 +17,12 @@ module barrel_shifter_tb;
 	wire 	[`BW_DATA-1:0]				o_y;
 	wire 	[`BW_DATA-1:0]				o_y_beh;
 	reg		[`BW_DATA-1:0]				i_a;
-	reg		[`BW_CTRL-1:0]				i_k;    
+	reg		[$clog2(`BW_DATA)-1:0]		i_k;    
 	reg									i_left; 
 
 	barrel_shifter
 	#(
-		.BW_DATA			(`BW_DATA			),
-		.BW_CTRL			(`BW_CTRL			)
+		.BW_DATA			(`BW_DATA			)
 	)
 	u_barrel_shifter(
 		.o_y				(o_y				),
@@ -35,8 +33,7 @@ module barrel_shifter_tb;
 
 	barrel_shifter_beh
 	#(
-		.BW_DATA			(`BW_DATA			),
-		.BW_CTRL			(`BW_CTRL			)
+		.BW_DATA			(`BW_DATA			)
 	)
 	u_barrel_shifter_beh(
 		.o_y				(o_y_beh			),
@@ -90,7 +87,7 @@ module barrel_shifter_tb;
 		if ($value$plusargs("vcd_file=%s", vcd_file)) begin
 			$dumpfile(vcd_file);
 			$dumpvars;
-			for (j=0; j<=`BW_CTRL; j++) begin
+			for (j=0; j<=$clog2(`BW_DATA); j++) begin
 				$dumpvars(0, u_barrel_shifter.stage[i]);
 			end
 		end else begin

@@ -2,15 +2,15 @@
 
 module barrel_shifter
 #(
-    parameter   BW_DATA         = 8,
-    parameter   BW_CTRL         = 3
+    parameter   BW_DATA         = 8
 )
 (   
     output      [BW_DATA-1:0]           o_y,
     input       [BW_DATA-1:0]           i_a,
-    input       [BW_CTRL-1:0]           i_k,    // rotate amount
-    input                               i_left  // rotate direction (1:left , 0:right)
+    input       [$clog2(BW_DATA)-1:0]   i_k,    // rotate amount
+    input                           	i_left  // rotate direction (1:left , 0:right)
 );
+    localparam  BW_CTRL     = $clog2(BW_DATA);
 
     wire        [BW_DATA-1:0]           stage[BW_CTRL:0];
     
@@ -34,13 +34,12 @@ endmodule
     
 module barrel_shifter_beh
 #(  
-    parameter   BW_DATA         = 8,
-    parameter   BW_CTRL         = 3
+    parameter   BW_DATA         = 8
 )
 (   
     output      [BW_DATA-1:0]           o_y,
     input       [BW_DATA-1:0]           i_a,
-    input       [BW_CTRL-1:0]           i_k,    // rotate amount
+    input       [$clog2(BW_DATA)-1:0]   i_k,    // rotate amount
     input                               i_left  // rotate direction (1:left , 0:right)
 );
     assign o_y = i_left ?   (i_a << i_k) | (i_a >> (BW_DATA-i_k)) :
