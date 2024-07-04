@@ -6,23 +6,6 @@
 
 - address range : 000000 ~ 111111
     - total 8 chips are needed
-        - ----------------------------
-        -    <chip0l>  ||  <chip0h>
-        -   data[31:0] || data[63:32]
-        -  addr:00xxxx || addr:00xxxx
-        - ----------------------------
-        -    <chip1l>  ||  <chip1h>
-        -   data[31:0] || data[63:32]
-        -  addr:01xxxx || addr:01xxxx
-        - ----------------------------
-        -    <chip2l>  ||  <chip2h>
-        -   data[31:0] || data[63:32]
-        -  addr:10xxxx || addr:10xxxx
-        - ----------------------------
-        -    <chip3l>  ||  <chip3h>
-        -   data[31:0] || data[63:32]
-        -  addr:11xxxx || addr:11xxxx
-        - ----------------------------
         
 ## Verilog Code
 ### DUT
@@ -151,3 +134,5 @@ endmodule
 
 ## Simulation Result
 ![waveform](./waveform/waveform0.png)
+![waveform](./waveform/waveform1.png)
+![waveform](./waveform/waveform2.png)
