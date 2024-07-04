@@ -70,11 +70,11 @@ endmodule
 
 ## Simulation Result
 ![waveform](./waveform/waveform0.png)
--@ 15sec : load=1, d=8'b00100100
-- parallel input '00100100' is parallely loaded. 
+- @ 15sec : load=1, d=8'b00100100
+    - parallel input '00100100' is parallely loaded. 
 
--@ 25sec : load=0, s=1
-- '00100100' is right-shifted with 's=1' -> '01001001'
+- @ 25sec : load=0, s=1
+    - '00100100' is right-shifted with 's=1' -> '01001001'
 
--@ 85sec : load=0, s=0
-- '00111111' is right-shifted with 's=0' -> '01111110'
+- @ 85sec : load=0, s=0
+    - '00111111' is right-shifted with 's=0' -> '01111110'

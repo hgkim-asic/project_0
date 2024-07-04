@@ -1,8 +1,16 @@
 # Carry Lookahaed Adder
 ## Operation Principle
-    P[i] = A[i] ^ B[i];
-    G[i] = A[i] & B[i];
-    C[i] =  
+- A CLA improves speed by reducing the time required to determine carry bits.
+- It calculates one or more carry bits before the sum, which reduces the wait time to calculate the result of the larger-value bits of the adder.
+
+### Implementation
+- P[i] = A[i] ^ B[i]
+- G[i] = A[i] & B[i]
+
+- G[i:j] = G[i] + P[i](G[i-1]+P[i-1](G[i-2 + P[i-2]G[j]))
+- P[i:j] = P[i]P[i-1] P[i-2]P[j]                                                                                
+- C[i] = G[i:j] + P[i:j]C[j-1]
+
 ## Verilog Code
 ### DUT
 ```Verilog
@@ -101,5 +109,5 @@ endmodule
     - c   = 1 --> correct
 
 ![waveform](./waveform/waveform1.png)
--@ 100sec
+- @ 100sec
     - Sim completed with 'err=0'.

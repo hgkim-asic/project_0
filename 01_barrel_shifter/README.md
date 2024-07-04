@@ -89,11 +89,11 @@ endmodule
 
 ## Simulation Result
 ![waveform](./waveform/waveform0.png)
--@ 0sec : k=0, left=1
-- input '00100100' left-rotated by 0 => output remains unchanged
+- @ 0sec : k=0, left=1
+    - input '00100100' left-rotated by 0 => output remains unchanged
 
--@ 20sec : k=2, left=1
-- input '00001101' left-rotated by 2 => '00110100'
+- @ 20sec : k=2, left=1
+    - input '00001101' left-rotated by 2 => '00110100'
 
--@ 30sec : k=3, left=0
-- input '01100101' right-rotated by 3 => '10101100'
+- @ 30sec : k=3, left=0
+    - input '01100101' right-rotated by 3 => '10101100'

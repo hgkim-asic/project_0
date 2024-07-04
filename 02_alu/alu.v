@@ -26,24 +26,24 @@
 
 module alu
 #(	
-	parameter	N			= 32
+	parameter	N		= 32
 )
 (	
 	output reg signed	[N-1:0]		o_y,
 	output	 						o_c,
-	output							o_ovf,
+//	output							o_ovf,
 	input signed		[N-1:0]		i_a,
 	input signed 		[N-1:0]		i_b,
 	input 				[2:0]		i_f
 );
 
 	wire signed			[N-1:0]		sum;
-	wire							ovf_add	=	(i_f == 3'b010) &&
-												((~i_a[N-1] && ~i_b[N-1] && sum[N-1]) || (i_a[N-1] && i_b[N-1] && ~sum[N-1]));
-	wire							ovf_sub =	(i_f == 3'b110) && 
-												((~i_a[N-1] && i_b[N-1] && sum[N-1]) || (i_a[N-1] && ~i_b[N-1] && ~sum[N-1]));
-
-	assign o_ovf = ovf_add || ovf_sub;	
+//	wire							ovf_add	=	(i_f == 3'b010) &&
+//												((~i_a[N-1] && ~i_b[N-1] && sum[N-1]) || (i_a[N-1] && i_b[N-1] && ~sum[N-1]));
+//	wire							ovf_sub =	(i_f == 3'b110) && 
+//												((~i_a[N-1] && i_b[N-1] && sum[N-1]) || (i_a[N-1] && ~i_b[N-1] && ~sum[N-1]));
+//
+//	assign o_ovf = ovf_add || ovf_sub;	
 	assign {o_c, sum} = i_f[2] ? i_a-i_b : i_a+i_b;
 
 	always @(*) begin

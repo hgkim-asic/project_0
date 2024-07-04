@@ -128,6 +128,12 @@ module sram_extension_tb;
 		if ($value$plusargs("vcd_file=%s", vcd_file)) begin
 			$dumpfile(vcd_file);
 			$dumpvars;
+			for (j=0; j<16; j=j+1) begin
+				$dumpvars(0, u_sram_extension.genblk1[0].genblk2[0].u_spsram.mem[j]); // mem of chip0l
+				$dumpvars(0, u_sram_extension.genblk1[0].genblk2[1].u_spsram.mem[j]); // mem of chip0h
+				$dumpvars(0, u_sram_extension.genblk1[1].genblk2[0].u_spsram.mem[j]); // mem of chip1l
+				$dumpvars(0, u_sram_extension.genblk1[1].genblk2[1].u_spsram.mem[j]); // mem of chip1h
+			end
 		end else begin
 			$dumpfile("sram_extension_tb.vcd");
 			$dumpvars;

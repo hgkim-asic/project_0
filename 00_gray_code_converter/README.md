@@ -83,17 +83,17 @@ endmodule
 
 ## Simulation Result
 ![waveform](./waveform/waveform0.png)
--@ 0sec~
-- Binary Input: 00000000, 00000001, 00000010, 00000011, 00000100, ...
-- Gray Code Output: 00000000, 00000001, 00000011, 00000010, 00000110
-- Binary Ouput: 00000000, 00000001, 00000010, 00000011, 00000100, ...
+- @ 0sec~
+    - Binary Input: 00000000, 00000001, 00000010, 00000011, 00000100, ...
+    - Gray Code Output: 00000000, 00000001, 00000011, 00000010, 00000110
+    - Binary Ouput: 00000000, 00000001, 00000010, 00000011, 00000100, ...
 
 
 ![waveform](./waveform/waveform1.png)
--@ 1280sec
-- MSBs of all signals correctly transitioned (0->1) : both converters work as expected.
+- @ 1280sec
+    - MSBs of all signals correctly transitioned (0->1) : both converters work as expected.
 
 
 ![waveform](./waveform/waveform2.png)
--@ 2560sec
-- Simulation for all input cases completed with 'err=0'.
+- @ 2560sec
+    - Simulation for all input cases completed with 'err=0'.

@@ -16,7 +16,7 @@ module alu_tb;
 // --------------------------------------------------
 	wire	[`N-1:0]	o_y;
 	wire				o_c;
-	wire				o_ovf;
+//	wire				o_ovf;
 	reg		[`N-1:0]	i_a;
 	reg		[`N-1:0]	i_b;
 	reg		[2:0]		i_f;
@@ -28,7 +28,7 @@ module alu_tb;
 	u_alu_beh(
 		.o_y				(o_y				),
 		.o_c				(o_c				),
-		.o_ovf				(o_ovf				),
+//		.o_ovf				(o_ovf				),
 		.i_a				(i_a				),
 		.i_b				(i_b				),
 		.i_f				(i_f				)
@@ -70,7 +70,7 @@ module alu_tb;
 		i	= 0;
 		fn	= 0;
 		while(i < `SIMCYCLE) begin
-			if (fn%8 == 7) begin
+			if (fn%8 != 3) begin
 				perform_operation(
 					fn,
 					$urandom,

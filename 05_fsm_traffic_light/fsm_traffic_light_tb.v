@@ -44,7 +44,7 @@ module fsm_traffic_light_tb;
 // --------------------------------------------------
 	task init;
 		begin
-			i_TA			= 0;
+			i_TA			= 1;
 			i_TB			= 0;
 			i_P				= 0;
 			i_R				= 0;
@@ -72,7 +72,7 @@ module fsm_traffic_light_tb;
 		resetNCycle(1);
 		#(1000/`CLKFREQ);
 		for (i=0; i<`SIMCYCLE; i=i+1) begin
-			#(1000/`CLKFREQ);
+			#(2000/`CLKFREQ);
 			{i_TA, i_TB, i_P, i_R} = $urandom;
 		end
 		#(1000/`CLKFREQ);

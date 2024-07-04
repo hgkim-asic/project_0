@@ -1,5 +1,14 @@
-# FSM - Traffic Light
+# FSM - Traffic Light Controller
 ## Operation Principle
+![capture0](./capture/capture0.png)
+- Traffic sensors: TA, TB (TRUE when there’s traffic)
+- Lights: LA, LB (Green or Yellow or Red)
+    
+![capture1](./capture/capture1.png)
+- When P = 1
+    - enter Parade Mode & Bravado Blvd light stays green
+- When R = 1
+    - leave Parade Mode
 
 ## Verilog Code
 ### DUT
@@ -16,13 +25,10 @@ module fsm_traffic_light
     input               i_rstn
 );
 
-    localparam  S0_L    = 2'd0;
-    localparam  S1_L    = 2'd1;
-    localparam  S2_L    = 2'd2;
-    localparam  S3_L    = 2'd3;
-    
-    localparam  S0_M    = 1'd0;
-    localparam  S1_M    = 1'd1;
+    localparam  S0      = 2'd0;
+    localparam  S1      = 2'd1;
+    localparam  S2      = 2'd2;
+    localparam  S3      = 2'd3;
 
     localparam  GREEN   = 2'd0;
     localparam  YELLOW  = 2'd1;
@@ -31,11 +37,11 @@ module fsm_traffic_light
     reg [2:0]   c_state_L, n_state_L;
     reg [1:0]   c_state_M, n_state_M;
 
-    wire        M       = c_state_M == S1_M;
+    wire    M   = c_state_M == S1;
 
     always @(posedge i_clk) begin
         if(!i_rstn) begin
-            c_state_L   <= S0_L;
+            c_state_L   <= S0;
         end else begin
             c_state_L   <= n_state_L;   
         end
@@ -43,16 +49,16 @@ module fsm_traffic_light
     
     always @(*) begin
         case (c_state_L)
-            S0_L    : n_state_L = ~i_TA         ? S1_L : S0_L;
-            S1_L    : n_state_L = S2_L;
-            S2_L    : n_state_L = ~M && ~i_TB   ? S3_L : S2_L;
-            S3_L    : n_state_L = S0_L;
+            S0  : n_state_L = ~i_TA         ? S1 : S0;
+            S1  : n_state_L = S2;
+            S2  : n_state_L = ~M && ~i_TB   ? S3 : S2;
+            S3  : n_state_L = S0;
         endcase
     end
 
     always @(posedge i_clk) begin
         if(!i_rstn) begin
-            c_state_M   <= S0_M;    
+            c_state_M   <= S0;  
         end else begin
             c_state_M   <= n_state_M;   
         end
@@ -60,32 +66,31 @@ module fsm_traffic_light
     
     always @(*) begin
         case (c_state_M)
-            S0_M    : n_state_M = i_P ? S1_M : S0_M;
-            S1_M    : n_state_M = i_R ? S0_M : S1_M;
+            S0  : n_state_M = i_P ? S1 : S0;
+            S1  : n_state_M = i_R ? S0 : S1;
         endcase
     end
 
     always @(*) begin
         case (c_state_L)
-            S0_L : begin
+            S0 : begin
                 o_LA = GREEN;
                 o_LB = RED;
             end
-            S1_L : begin
+            S1 : begin
                 o_LA = YELLOW;
                 o_LB = RED;
             end
-            S2_L : begin
+            S2 : begin
                 o_LA = RED;
                 o_LB = GREEN;
             end
-            S3_L : begin
+            S3 : begin
                 o_LA = RED;
                 o_LB = YELLOW;
             end
         endcase
     end
-     
 endmodule
 ```
 
@@ -147,12 +152,50 @@ endmodule
 ```
 
 ## Simulation Result
-![waveform](./waveform/waveform0.png)
--@ 0sec : k=0, left=1
-- input '00100100' left-rotated by 0 => output remains unchanged
+![waveform0](./waveform/waveform0.png)
+- @ 15sec : rstn = 0
+    - L_state == M_state == S0
+    - LA = GREEN 
+    - LB = RED
 
--@ 20sec : k=2, left=1
-- input '00001101' left-rotated by 2 => '00110100'
+- @ 55sec: TA = 0
+    - L_state : S0 -> S1
+    - LA = GREEN -> YELLOW
+    - LB = RED
+    
+- @ 65sec
+    - L_state : S1 -> S2
+    - LA = YELLOW -> RED
+    - LB = RED -> GREEN
 
--@ 30sec : k=3, left=0
-- input '01100101' right-rotated by 3 => '10101100'
+- @ 75sec : TB = 0, M = 0
+    - L_state : S2 -> S3
+    - LA = RED
+    - LB = GREEN -> YELLOW
+
+- @ 85sec
+    - L_state : S3 -> S0
+    - LA = RED -> GREEN
+    - LB = YELLOW -> RED
+
+![waveform1](./waveform/waveform1.png)
+- @ 485sec : P = 1
+    - M_state : S0 -> S1
+    - M = 0 -> 1
+
+- @ 495sec : p = 1
+    - M_state : S0 -> s1
+    - M = 0 -> 1
+    
+- @ 535sec : TB = 0, M = 1
+    - L_state : S2 (remains unchanged)
+
+- @ 555sec : R = 1
+    - M_state : S1 -> S0
+    - M = 1 -> 0
+
+![waveform2](./waveform/waveform2.png)
+- @ 655sec : TB = 0, M = 0
+    - L_state : S2 -> S3
+    - LA = RED
+    - LB = GREEN -> YELLOW
