@@ -1,5 +1,29 @@
 # SRAM Extension
 ## Operation Principle
+- cond : synchronous sram
+- wen == 1 : mem[i_addr] <= i_data
+- oen == 1 : o_data <= mem[i_addr]
+
+- address range : 000000 ~ 111111
+    - total 8 chips are needed
+        - ----------------------------
+        -    <chip0l>  ||  <chip0h>
+        -   data[31:0] || data[63:32]
+        -  addr:00xxxx || addr:00xxxx
+        - ----------------------------
+        -    <chip1l>  ||  <chip1h>
+        -   data[31:0] || data[63:32]
+        -  addr:01xxxx || addr:01xxxx
+        - ----------------------------
+        -    <chip2l>  ||  <chip2h>
+        -   data[31:0] || data[63:32]
+        -  addr:10xxxx || addr:10xxxx
+        - ----------------------------
+        -    <chip3l>  ||  <chip3h>
+        -   data[31:0] || data[63:32]
+        -  addr:11xxxx || addr:11xxxx
+        - ----------------------------
+        
 ## Verilog Code
 ### DUT
 ```Verilog
@@ -12,17 +36,16 @@ module sram_extension
     input               i_oen,
     input               i_clk
 );
-
-    wire        [31:0]  w_o_data[1:0];
-    wire        [31:0]  w_i_data[1:0];
-    reg         [3:0]   cen;
+    wire        [31:0]  w_o_data[1:0];  
+    wire        [31:0]  w_i_data[1:0];  // i/o data is divided to 2 parts
+    reg         [3:0]   cen;            // chip select
 
     assign o_data                       = {w_o_data[1], w_o_data[0]};
     assign {w_i_data[1], w_i_data[0]}   = i_data;
     
     always @(*) begin
-        case (i_addr[5:4])
-            2'b00 : cen = 4'b0001;
+        case (i_addr[5:4])              // 2 out of 8 chips are activated for each case.
+            2'b00 : cen = 4'b0001; 
             2'b01 : cen = 4'b0010;
             2'b10 : cen = 4'b0100;
             2'b11 : cen = 4'b1000;
@@ -31,8 +54,8 @@ module sram_extension
 
     genvar i, j;
     generate 
-        for (i=0; i<4; i=i+1) begin     //  
-            for (j=0; j<2; j=j+1) begin // j==0 : lower 32-bit, j==1 : upper 32-bit
+        for (i=0; i<4; i=i+1) begin     // i==0 : lowest mem addresses, i==3 : highest mem addresses
+            for (j=0; j<2; j=j+1) begin // j==0 : lower 32-bit data,    j==1 : upper 32-bit data
                 spsram
                 #(
                     .BW_DATA        (32             ),
@@ -42,9 +65,9 @@ module sram_extension
                     .o_data         (w_o_data[j]    ),
                     .i_data         (w_i_data[j]    ),
                     .i_addr         (i_addr[3:0]    ),
-                    .i_wen          (i_wen&&cen[i]  ),
+                    .i_wen          (i_wen          ),
                     .i_cen          (cen[i]         ),
-                    .i_oen          (i_oen&&cen[i]  ),
+                    .i_oen          (i_oen          ),
                     .i_clk          (i_clk          )
                 );
             end

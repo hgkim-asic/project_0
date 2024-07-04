@@ -39,9 +39,9 @@ module sram_extension
 					.o_data			(w_o_data[j]	),
 					.i_data			(w_i_data[j]	),
 					.i_addr			(i_addr[3:0]  	),
-					.i_wen			(i_wen&&cen[i]	),
+					.i_wen			(i_wen			),
 					.i_cen			(cen[i]       	),
-					.i_oen			(i_oen&&cen[i]	),
+					.i_oen			(i_oen			),
 					.i_clk			(i_clk        	)
 				);
 			end
