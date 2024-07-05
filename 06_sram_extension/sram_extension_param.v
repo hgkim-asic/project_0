@@ -1,7 +1,11 @@
+`include "spsram.v"
+
 module sram_extension_param
 #(
-	parameter	BW_DATA		= 64,
-	parameter	BW_ADDR		= 6
+	parameter	BW_DATA			= 64,
+	parameter	BW_ADDR			= 6,
+	parameter	BW_DATA_UNIT	= 32,
+	parameter	BW_ADDR_UNIT	= 4
 )
 (
 	output		[BW_DATA-1:0]				o_data,
@@ -11,29 +15,27 @@ module sram_extension_param
 	input									i_oen,
 	input									i_clk
 );
-	localparam  chip_count_for_addr			= 2**(BW_ADDR-4);
-	localparam  chip_count_for_data			= BW_DATA/32;
+	localparam  chip_count_for_addr			= 2**(BW_ADDR-BW_ADDR_UNIT);
+	localparam  chip_count_for_data			= BW_DATA/BW_DATA_UNIT;
 	localparam	total_chip_count			= chip_count_for_addr*chip_count_for_data;
 
-	wire		[BW_DATA/2-1:0]				w_o_data[BW_DATA/32-1:0];	
-	wire		[BW_DATA/2-1:0]				w_i_data[BW_DATA/32-1:0];	// i/o data is divided to 2 parts
-	wire		[total_chip_count-1:0]		cen;						// chip select
+	wire		[total_chip_count-1:0]		cen;
 
-	assign cen = 1 << i_addr[(BW_ADDR-1)-:(BW_ADDR-4)];
+	assign cen = 1 << i_addr[(BW_ADDR-1)-:(BW_ADDR-BW_ADDR_UNIT)];
 
 	genvar i, j;
 	generate 
-		for (i=0; i<chip_count_for_addr; i=i+1) begin		// i==0 : lowest mem addresses, i==3 : highest mem addresses
-			for (j=0; j<chip_count_for_data; j=j+1) begin	// j==0 : lower 32-bit data, j==1 : upper 32-bit data
+		for (i=0; i<chip_count_for_addr; i=i+1) begin
+			for (j=0; j<chip_count_for_data; j=j+1) begin
 				spsram
 				#(
-					.BW_DATA		(32           	),
-					.BW_ADDR		(4            	)
+					.BW_DATA		(BW_DATA_UNIT    ),
+					.BW_ADDR		(BW_ADDR_UNIT    )
 				)
 				u_spsram(
-					.o_data			(o_data[32*j+:32]),
-					.i_data			(i_data[32*j+:32]),
-					.i_addr			(i_addr[3:0]  	),
+					.o_data			(o_data[BW_DATA_UNIT*j+:BW_DATA_UNIT]),
+					.i_data			(i_data[BW_DATA_UNIT*j+:BW_DATA_UNIT]),
+					.i_addr			(i_addr[BW_ADDR_UNIT-1:0]  	),
 					.i_wen			(i_wen			),
 					.i_cen			(cen[i]       	),
 					.i_oen			(i_oen			),
