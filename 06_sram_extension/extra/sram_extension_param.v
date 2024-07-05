@@ -21,7 +21,7 @@ module sram_extension_param
 
 	wire		[total_chip_count-1:0]		cen;
 
-	assign cen = 1 << i_addr[(BW_ADDR-1)-:(BW_ADDR-BW_ADDR_UNIT)];
+	assign cen = 'b1 << i_addr[(BW_ADDR-1)-:(BW_ADDR-BW_ADDR_UNIT)];
 
 	genvar i, j;
 	generate 

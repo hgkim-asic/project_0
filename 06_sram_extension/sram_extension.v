@@ -17,7 +17,7 @@ module sram_extension
 	assign o_data 						= {w_o_data[1], w_o_data[0]};
 	assign {w_i_data[1], w_i_data[0]}	= i_data;
 	
-	assign cen = 1 << i_addr[5:4];		// 2 out of 8 chips are activated for each case.p
+	assign cen = 4'b0001 << i_addr[5:4];		// 2 out of 8 chips are activated for each case.p
 	
 	genvar i, j;
 	generate 
